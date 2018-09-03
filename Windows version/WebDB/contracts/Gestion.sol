@@ -4,26 +4,22 @@ pragma solidity ^0.4.21;
 
 contract Gestion {
 
-	string queryinput = "init"; // The input of the request is stored in this variable
-
 	string result = "No Query"; // The result of the query is stored in this variable
 
 	string custom = "No request"; // We will store the complete custom request in this variable
 	
-	event mysqlevent (string input); 
-	// Event used to send a MySQL Query. The input is the query input. It allows to record the query
-
-	event phpEvent(string query_input); 
-	// Event used to send a PHP Query. The input is the query input. It allows to record the query
-
+	
     event customEvent (string mysqlcustom);
-
-	function setString (string input) public {
-		queryinput = input;
+    // Event used to send a MySQL Query. The input is the query input. It allows to record the query
+	
+	
+	
+	function setCustom (string input) public {
+		custom = input;
 	}
 
 	/*
-	Function setString : 
+	Function setCustom : 
 
 		- input: string
 
@@ -34,15 +30,14 @@ contract Gestion {
 
 	*/
 
-	
 
-
-	function getString () public constant returns(string)  {
-		return queryinput;
+	function getCustom () public constant returns(string)  {
+		return custom;
 	}
 	
+
 	/*
-	Function getString : 
+	Function getCustom : 
 
 		- input: none
 
@@ -54,16 +49,6 @@ contract Gestion {
 
 	*/
 
-
-	function setCustom (string input) public {
-		custom = input;
-	}
-
-
-	function getCustom () public constant returns(string)  {
-		return custom;
-	}
-	
 
 	function setResult(string input) public {
 		result = input;
@@ -100,46 +85,23 @@ contract Gestion {
 
 	*/
 
-
 	
-	function CreateMySQLEvent(string input) public {
-		emit mysqlevent(input);
-	}
-	
-	/*
-	Function CreateMySQLEvent: 
-
-		- input: string
-
-		- output: none
-
-	emit a mysqlevent. The input of this event is the variable input (which is also the input of the query).
-	The event is written in a log in the blockchain when it is emitted.
-
-
-	*/
-
-	
-
-	function CreatephpEvent(string input) public {
-		emit phpEvent(input);
-	}
-
-	/*
-	Function CreatephpEvent: 
-
-		- input: string
-
-		- output: none
-
-	emit a phpevent. The input of this event is the variable input (which is also the input of the query).
-	The event is written in a log in the blockchain when it is emitted.
-
-
-	*/
 
 	function CreateCustomEvent(string input) public {
 		emit customEvent(input);
 	}
+
+	/*
+	Function CreateCustomEvent: 
+
+		- input: string
+
+		- output: none
+
+	Emit a mysqlevent. The input of this event is the variable input (which is also the input of the query).
+	The event is written in a log in the blockchain when it is emitted.
+
+
+	*/
 
 }

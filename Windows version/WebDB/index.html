@@ -34,12 +34,12 @@ p {
 </style>
 
 <body>
-	<!--<img src="etsit.png"/>-->
+	
 	<h1> HTML-Blockchain-MySQL Interaction </h1>
 		
 		<h2> MySQL request </h2>
 		<input type="text" id = "setcustom" size="70"></br>
-		<input type="button" value="Set your request" onclick="setcustom()">
+		<input type="button" value="Set your request" onclick="setcustomrequest()">
 
 		<h2> Remember your request </h2>
 		<input type="button" value="Request in the Blockchain" onclick="refreshcustom()">
@@ -52,59 +52,20 @@ p {
 		<input type="button" value="Click for result!" onclick="getcustomresults()">
 		<p id = "resultcustom"> Result </p></br>
 
-        <input type="button" value="CLICK FOR NEW REQUEST!" onClick="window.location.reload()">
+        <input type="button" value="CLICK FOR NEW REQUEST!" onclick="window.location.reload()">
 
-        <!--<h2> Choose an owner </h2>
-		<input type="text" id = "setstring">
-		<input type="button" value="Set an owner" onclick="setstring()">
-		
-        <h2> Remember the actual owner </h2>
-		<input type="button" value="Owner in the Blockchain" onclick="refreshowner()">
-		
-		<p id = "getstring"> Owner </p>
-		
-		<h2> Emit a request  </h2>
-		<input type="button" value="MySQL" onclick="mysqlrequest()">
-		<input type="button" value="PHP" onclick="phprequest()">	
-               
-        <h2> Get the result of the last request</h2>
-		<input type="button" value="Query result" onclick="getresults()">
-        <p id = "result"> Result </p>-->
-
-        
+                
 <script>
 
 	// Ver app.js, las variables se definen allí: setstring, increase...
 	// jQuery.get( url [, data ] [, success ] [, dataType ] )
 	// Permite cargar datos desde el servidor mediante un HTTP GET request 
-	function setstring(){
-		$.get('', {setstring :$('#setstring').val()}, function(data){ 
-		// El primer valor con '' indica que seguimos en la misma página 
-		// $(selector).val() devuelve atributo value
-		// $(selector).val(value) establece el valor del atributo value
-			alert("String modified in the Blockchain");
-		});
-	}
-
-	function setcustom(){
+	function setcustomrequest(){
 		$.get('', {setcustom :$('#setcustom').val()}, function(data){ 
 		// El primer valor con '' indica que seguimos en la misma página 
 		// $(selector).val() devuelve atributo value
 		// $(selector).val(value) establece el valor del atributo value
 			alert("String modified in the Blockchain");
-		});
-	}
-
-	function mysqlrequest(){
-		$.get('', {mysqlrequest : ' '  }, function(data){
-			alert("MySQL request sent");
-		});
-	}
-
-
-	function phprequest(){
-		$.get('', {phprequest : ' '  }, function(data){
-			alert("PHP request sent");
 		});
 	}
 
@@ -114,27 +75,17 @@ p {
 		});
 	}
 
-	function refreshowner(){
-		$.get('', {refreshowner : ' '}, function(data){
-			$('#getstring').html(data.getssstring);   // Coge los elementos con id = "getstring"
-		}, 'json');  // Se devuelve en formato JSON
-	}
-
+	
 	function refreshcustom(){
 		$.get('', {refreshcustom : ' '}, function(data){
-			$('#getcustom').html(data.getcccustom);   // Coge los elementos con id = "getstring"
+			$('#getcustom').html(data.getcccustom);   // Coge los elementos con id = "getcustom"
 		}, 'json');  // Se devuelve en formato JSON
 	}
 
-	function getresults(){
-		$.get('', {getresults : ' '}, function(data){
-			$('#result').html(data.disssplay);   // Coge los elementos con id = "result"
-		}, 'json');  
-	}
-
+	
 	function getcustomresults(){
 		$.get('', {getresults : ' '}, function(data){
-			$('#resultcustom').html(data.disssplay);   // Coge los elementos con id = "result"
+			$('#resultcustom').html(data.disssplay);   // Coge los elementos con id = "resultcustom"
 		}, 'json');  
 	}
 

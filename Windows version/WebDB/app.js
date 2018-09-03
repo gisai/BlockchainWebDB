@@ -25,64 +25,12 @@ var Gestion = new web3.eth.Contract(  [
       "inputs": [
         {
           "indexed": false,
-          "name": "input",
-          "type": "string"
-        }
-      ],
-      "name": "mysqlevent",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "query_input",
-          "type": "string"
-        }
-      ],
-      "name": "phpEvent",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
           "name": "mysqlcustom",
           "type": "string"
         }
       ],
       "name": "customEvent",
       "type": "event"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "input",
-          "type": "string"
-        }
-      ],
-      "name": "setString",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getString",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
     },
     {
       "constant": false,
@@ -148,34 +96,6 @@ var Gestion = new web3.eth.Contract(  [
           "type": "string"
         }
       ],
-      "name": "CreateMySQLEvent",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "input",
-          "type": "string"
-        }
-      ],
-      "name": "CreatephpEvent",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "input",
-          "type": "string"
-        }
-      ],
       "name": "CreateCustomEvent",
       "outputs": [],
       "payable": false,
@@ -191,51 +111,16 @@ var Gestion = new web3.eth.Contract(  [
 var server = http.createServer(function(req, res) {  // Creamos un servidor
 
   var url_parts = url.parse(req.url, true);  // Dividimos la URL en partes
-  var setstring = url_parts.query.setstring;  // Vamos añadiendo las diferentes posibles querys
-  var mysqlrequest = url_parts.query.mysqlrequest;
-  var phprequest = url_parts.query.phprequest;
-  var refreshowner = url_parts.query.refreshowner;
-  var getresults = url_parts.query.getresults;
 
+  // Vamos añadiendo las diferentes posibles querys
+  
   var setcustom = url_parts.query.setcustom;  
   var mysqlcustomrequest = url_parts.query.mysqlcustomrequest;
   var refreshcustom = url_parts.query.refreshcustom;
+  var getresults = url_parts.query.getresults;
 
-  if (setstring){
-    console.log('Query ready (owner)!');
-    Gestion.methods.setString(setstring).send({ from : web3.eth.defaultAccount});
-  } 
 
-  else if (mysqlrequest){
-    Gestion.methods.getString().call(function(error, result){
-    if (!error){
-      Gestion.methods.CreateMySQLEvent( toString(result) ).send({ from : web3.eth.defaultAccount });
-    }
-    else
-      console.log(error);
-    });
-    console.log('MySQL request was sent');
-  } 
-
-  else if (phprequest){
-    Gestion.methods.getString().call(function(error, result){
-    if (!error){
-      Gestion.methods.CreatephpEvent( toString(result) ).send({ from : web3.eth.defaultAccount });
-    }
-    else
-      console.log(error);
-    });
-    console.log('PHP request was sent');
-  }
-
-  else if (refreshowner){
-    Gestion.methods.getString().call(function(error, result){
-      res.writeHead(200, {'Content-Type' : 'application/json'});  // MIME Type / Internet Media Type
-      res.end(JSON.stringify({ getssstring : result + ' ' }));  // Hay que pasar un string al servidor
-    });
-  }
-
-  else if (setcustom){
+  if (setcustom){
     console.log('Request ready!');
     Gestion.methods.setCustom(setcustom).send({ from : web3.eth.defaultAccount});
   } 
