@@ -1,4 +1,4 @@
-pragma solidity ^0.4.21;
+pragma solidity ^0.5.0;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**********************************************************STORE DATA AND EMIT EVENTS*********************************************************/
 
@@ -14,7 +14,7 @@ contract Gestion {
 	
 	
 	
-	function setCustom (string input) public {
+	function setCustom (string memory input) public {
 		custom = input;
 	}
 
@@ -31,7 +31,7 @@ contract Gestion {
 	*/
 
 
-	function getCustom () public constant returns(string)  {
+	function getCustom () public view returns(string memory)  {
 		return custom;
 	}
 	
@@ -50,7 +50,7 @@ contract Gestion {
 	*/
 
 
-	function setResult(string input) public {
+	function setResult(string memory input) public {
 		result = input;
 	}
 
@@ -68,7 +68,7 @@ contract Gestion {
 	*/
 	
 
-	function getResult() public constant returns(string)  {
+	function getResult() public view returns(string memory)  {
 		return result;
 	}
 	
@@ -87,7 +87,7 @@ contract Gestion {
 
 	
 
-	function CreateCustomEvent(string input) public {
+	function CreateCustomEvent(string memory input) public {
 		emit customEvent(input);
 	}
 

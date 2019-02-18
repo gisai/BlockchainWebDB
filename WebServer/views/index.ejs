@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+	<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+  </head>
+  <body>
+  
+  <script>
+
+	// Ver app.js, las variables se definen allí: setstring, increase...
+	// jQuery.get( url [, data ] [, success ] [, dataType ] )
+	// Permite cargar datos desde el servidor mediante un HTTP GET request 
+	function sendRequest(){
+		$.get('/sendRequest', {request :$('#setcustom').val()}, function(data){ 
+		// El primer valor con '' indica que seguimos en la misma página 
+		// $(selector).val() devuelve atributo value
+		// $(selector).val(value) establece el valor del atributo value
+			alert("String modified in the Blockchain");
+		});
+	}
+	
+	function getRequest(){
+		$.get('/getRequest', function(data){
+			$('#getcustom').html(data.getcccustom);   // Coge los elementos con id = "getcustom"
+		}, 'json');  // Se devuelve en formato JSON
+	}
+	
+
+	function executeRequest(){
+		$.get('/executeRequest', function(data){
+			alert("MySQL custom request sent");
+		});
+	}	
+
+	
+	function getResult(){
+		$.get('/getResult',  function(data){
+			$('#resultcustom').html(data.disssplay);   // Coge los elementos con id = "resultcustom"
+		}, 'json');  
+	}
+
+	// Ejemplos:
+
+	// INSERT INTO video_games (ID, name, owner, console, price, players, comments) VALUES (51, 'New Super Mario Bros', 'John', 'Wii', 4, 1, 'Incredible!')
+
+	// SELECT name FROM video_games WHERE console = 'Nintendo 64'
+
+	// SELECT nom FROM jeux_video WHERE prix >30
+
+	// UPDATE video_games SET owner='Kathy' WHERE ID=1
+
+</script>	
+  
+    <h1><%= title %></h1>	
+	<h1> HTML-Blockchain-MySQL Interaction </h1>
+		
+		<h2> MySQL request </h2>
+		<input type="text" id = "setcustom" size="70"></br>
+		<input type="button" value="Set your request" onclick="sendRequest()">
+
+		<h2> Remember your request </h2>
+		<input type="button" value="Request in the Blockchain" onclick="getRequest()">
+		<p id = "getcustom"> Request </p></br>
+
+		<h2> Emit your request  </h2>
+		<input type="button" value="MySQL request" onclick="executeRequest()"></br>
+		               
+        <h2> Get the result </h2>
+		<input type="button" value="Click for result!" onclick="getResult()">
+		<p id = "resultcustom"> Result </p></br>
+
+        <input type="button" value="CLICK FOR NEW REQUEST!" onclick="window.location.reload()">
+  </body>
+</html>

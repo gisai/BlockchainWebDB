@@ -12,12 +12,13 @@ else{
 
 
  web3.eth.getAccounts((err,accounts)=> {
-	if (err) return
+	if (err) return;
 		web3.eth.defaultAccount = accounts[0];
 }); // Used to define the default acccount. This account will pay for the transactions
 
 
 var Gestion = new web3.eth.Contract([
+    
     {
       "anonymous": false,
       "inputs": [
@@ -28,7 +29,8 @@ var Gestion = new web3.eth.Contract([
         }
       ],
       "name": "customEvent",
-      "type": "event"
+      "type": "event",
+      "signature": "0x818d2411fb91789e92f56372e7b3507b252d906389d61065b79c41fbb3df6169"
     },
     {
       "constant": false,
@@ -42,7 +44,8 @@ var Gestion = new web3.eth.Contract([
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function"
+      "type": "function",
+      "signature": "0xef8adfc3"
     },
     {
       "constant": true,
@@ -56,7 +59,8 @@ var Gestion = new web3.eth.Contract([
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "signature": "0xd01ae036"
     },
     {
       "constant": false,
@@ -70,7 +74,8 @@ var Gestion = new web3.eth.Contract([
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function"
+      "type": "function",
+      "signature": "0x88e3cfda"
     },
     {
       "constant": true,
@@ -84,7 +89,8 @@ var Gestion = new web3.eth.Contract([
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "signature": "0xde292789"
     },
     {
       "constant": false,
@@ -98,9 +104,10 @@ var Gestion = new web3.eth.Contract([
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function"
+      "type": "function",
+      "signature": "0xf73361a4"
     }
-  ],'0xcffe589B12a544D99629CD10CEF5d2cF7A4889DD',
+  ],'0x05daB08fA1746d1730691770A67fCaccC37778cE',
   { gas: 4000000 }); // Maximun gas provided for a transaction 
   // Create an instance which refers to your smart contract, allowing you to interact with it
 
@@ -110,7 +117,7 @@ var Gestion = new web3.eth.Contract([
 
 /*************************MySQL SIDE QUERY CALLED BY AN EVENT *************************/
 
-var CustomMySQLEventListener = Gestion.events.customEvent({fromBlock:0},function(err,result){
+/*var CustomMySQLEventListener = Gestion.events.customEvent({fromBlock:0},()function(err,result){
   if(!err){
     console.log('Query sent!');
     callMySQLCustom();
@@ -119,6 +126,15 @@ var CustomMySQLEventListener = Gestion.events.customEvent({fromBlock:0},function
     console.log(err);
   }
 }); // This instance listen to the MySQL Event. If this event is detected, 
+    // it sends a MySQL Query (using the function callMySQLCustom)
+	*/
+	Gestion.events.customEvent({fromBlock:0}, (error, event) => { console.log(event); }).on('data',(event) => {
+	
+    console.log('Received SQL query event!');
+    callMySQLCustom();
+  });
+  
+// This instance listen to the MySQL Event. If this event is detected, 
     // it sends a MySQL Query (using the function callMySQLCustom)
 
 var prepare_query; // The input of the query is stored in this variable
@@ -158,8 +174,9 @@ It modifies the Blockchain and consummes ether
 */
 
 function callMySQLCustom(){
-  Gestion.methods.getCustom().call(function(error, result){
+  Gestion.methods.getCustom().call({ from : web3.eth.defaultAccount}).then((result, error) => {
     if(!error){
+		console.log("Query to perform in DB: "+result);
       prepare_custom = result;
     }
     else{
@@ -168,7 +185,7 @@ function callMySQLCustom(){
     con.query(prepare_custom, function(err, result){
       if (err) throw err;
       console.log('Result:' + JSON.stringify(result));
-      Gestion.methods.setResult(JSON.stringify(result)).send({ from : web3.eth.defaultAccount });
+      Gestion.methods.setResult(JSON.stringify(result)).send({ from : web3.eth.defaultAccount,gas: 2000000  });
     });
   });
 }
