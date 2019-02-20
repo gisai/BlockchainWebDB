@@ -38,18 +38,31 @@ Abrimos un terminal, vamos a la dirección del proyecto:
 $ truffle compile
 $ truffle migrate
 ```
-Antes de proseguir, hemos de comprobar que en el código de nuestros archivos WebServer\models\Gestion.js y DBManager\oracle.js contienen la dirección correcta del contrato que acabamos de desplegar en la blockchain. Para ello, vamos a Ganache, y en la pestaña transacciones, comprobamos que, de las cuatro transacciones que tenemos actualmente, en la segunda, denominada Contract Creation (la que ha gastamos más GAS), la dirección indicada como "Created contract address" coincide con la dirección de contrato que hemos incluido al declarar la variable Gestion en los archivos js antes mencionados.
+Al hacer este último comando aparece un resultado como el de la siguiente imagen. Anote la información correspondiente con contract address para el contrato de 'Gestion':
+
+<p align="center">
+<img src="https://github.com/gisai/BlockchainWebDB/raw/master/documentacion/contract_address.png" width="750">
+</p>
+
+Antes de proseguir, hemos de introducir la dirección donde se ha desplegado el contrato en nuestros proyectos. En WebServer\routes\index.js y en DBManager\oracle.js modificamos "cons contractAddress" por el valor que nos aparece en la consola al haber hecho 'truffle migrate' (en amarillo en la imagen).
+
+Procedemos a la instalación del sub-proyecto WebServer. Dentro de la carpeta WebServer ejecutamos:
+
 ```sh
 $ npm install
 $ npm run dev
 ```
+
 Esta última orden lanzará el servidor en localhost:3000
 
 Para la parte de base de datos, iniciamos nuestro servidor MySQL, nos aseguramos de que está lanzado en localhost:3306.
 Dentro del proyecto DBManager ejecutamos:
+
 ```sh
+$ npm install
 $ npm run dev
 ```
+
 En la capeta documentación hay un archivo sql para crear una talba de ejemplo en la base de datos y así poder jugar con las consultas a través de la blockchain. Consultas que se puede hacer:
 ```sql
 INSERT INTO video_games (ID, name, owner, console, price, players, comments) VALUES (51, 'New Super Mario Bros', 'John', 'Wii', 4, 1, 'Incredible!')
