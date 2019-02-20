@@ -1,7 +1,13 @@
 //////////////////////////////////////////////////////////////////
 /***************    CONNECTION WITH THE SMART CONTRACT*************/
 
-var Web3 = require('web3'); // Import the web3 module
+var Web3            = require('web3'),
+    path            = require('path')
+    GestionJSON  = require(path.join(__dirname, '../WebServer/build/contracts/Gestion.json'));
+
+const contractAddress = "0x0d3F97125e9482033E38c078a7Bfa07421654BF4";
+
+
 if(typeof web3 !== 'undefined'){
 	web3 = new Web3(web3.currentProvider);
 }
@@ -17,99 +23,7 @@ else{
 }); // Used to define the default acccount. This account will pay for the transactions
 
 
-var Gestion = new web3.eth.Contract([
-    
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "mysqlcustom",
-          "type": "string"
-        }
-      ],
-      "name": "customEvent",
-      "type": "event",
-      "signature": "0x818d2411fb91789e92f56372e7b3507b252d906389d61065b79c41fbb3df6169"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "input",
-          "type": "string"
-        }
-      ],
-      "name": "setCustom",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function",
-      "signature": "0xef8adfc3"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getCustom",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function",
-      "signature": "0xd01ae036"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "input",
-          "type": "string"
-        }
-      ],
-      "name": "setResult",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function",
-      "signature": "0x88e3cfda"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getResult",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function",
-      "signature": "0xde292789"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "input",
-          "type": "string"
-        }
-      ],
-      "name": "CreateCustomEvent",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function",
-      "signature": "0xf73361a4"
-    }
-  ],'0x05daB08fA1746d1730691770A67fCaccC37778cE',
-  { gas: 4000000 }); // Maximun gas provided for a transaction 
-  // Create an instance which refers to your smart contract, allowing you to interact with it
+var gestionContract = new web3.eth.Contract(GestionJSON.abi, contractAddress, { gas: 4000000 });
 
 
 
@@ -117,7 +31,7 @@ var Gestion = new web3.eth.Contract([
 
 /*************************MySQL SIDE QUERY CALLED BY AN EVENT *************************/
 
-/*var CustomMySQLEventListener = Gestion.events.customEvent({fromBlock:0},()function(err,result){
+/*var CustomMySQLEventListener = gestionContract.events.customEvent({fromBlock:0},()function(err,result){
   if(!err){
     console.log('Query sent!');
     callMySQLCustom();
@@ -128,7 +42,7 @@ var Gestion = new web3.eth.Contract([
 }); // This instance listen to the MySQL Event. If this event is detected, 
     // it sends a MySQL Query (using the function callMySQLCustom)
 	*/
-	Gestion.events.customEvent({fromBlock:0}, (error, event) => { console.log(event); }).on('data',(event) => {
+	gestionContract.events.customEvent({fromBlock:0}, (error, event) => { console.log(event); }).on('data',(event) => {
 	
     console.log('Received SQL query event!');
     callMySQLCustom();
@@ -174,7 +88,7 @@ It modifies the Blockchain and consummes ether
 */
 
 function callMySQLCustom(){
-  Gestion.methods.getCustom().call({ from : web3.eth.defaultAccount}).then((result, error) => {
+  gestionContract.methods.getCustom().call({ from : web3.eth.defaultAccount}).then((result, error) => {
     if(!error){
 		console.log("Query to perform in DB: "+result);
       prepare_custom = result;
@@ -185,7 +99,7 @@ function callMySQLCustom(){
     con.query(prepare_custom, function(err, result){
       if (err) throw err;
       console.log('Result:' + JSON.stringify(result));
-      Gestion.methods.setResult(JSON.stringify(result)).send({ from : web3.eth.defaultAccount,gas: 2000000  });
+      gestionContract.methods.setResult(JSON.stringify(result)).send({ from : web3.eth.defaultAccount,gas: 2000000  });
     });
   });
 }

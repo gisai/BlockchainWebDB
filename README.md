@@ -32,10 +32,9 @@ Descargamos el repositorio de GitHub.
 
 Arrancamos Ganache.
 
-En WebServer, en la carpeta build\contracts, borramos los dos archivos json que encontramos: Gestion.json y Migrations.json. Esto lo hacemos para que a la hora de migrar el contrato al blockchain no tengamos problemas, y hemos de hacerlo SIEMPRE cada vez iniciemos todo este proceso.
-Abrimos un terminal, vamos a la dirección del proyecto:
+Abrimos un terminal, vamos a la carpeta del sub-proyecto DBManager y ejecutamos:
 ```sh
-$ truffle compile
+$ truffle compile --all
 $ truffle migrate
 ```
 Al hacer este último comando aparece un resultado como el de la siguiente imagen. Anote la información correspondiente con contract address para el contrato de 'Gestion':
@@ -44,7 +43,7 @@ Al hacer este último comando aparece un resultado como el de la siguiente image
 <img src="https://github.com/gisai/BlockchainWebDB/raw/master/documentacion/contract_address.png" width="750">
 </p>
 
-Antes de proseguir, hemos de introducir la dirección donde se ha desplegado el contrato en nuestros proyectos. En WebServer\routes\index.js y en DBManager\oracle.js modificamos "cons contractAddress" por el valor que nos aparece en la consola al haber hecho 'truffle migrate' (en amarillo en la imagen).
+Antes de proseguir, hemos de introducir la dirección donde se ha desplegado el contrato en nuestros proyectos. En WebServer\routes\index.js y en DBManager\oracle.js modificamos el valor de "const contractAddress" por el valor que nos aparece en la consola al haber hecho 'truffle migrate' (en amarillo en la imagen).
 
 Procedemos a la instalación del sub-proyecto WebServer. Dentro de la carpeta WebServer ejecutamos:
 
