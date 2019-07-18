@@ -39,19 +39,101 @@
 	function getResult(){
 		$.get('/getResult',  function(data){
 			$('#resultcustom').html(data.disssplay);   // Coge los elementos con id = "resultcustom"
+			$('#logevent').html(data.logevent);
 		}, 'json');  
+	};
+
+	function sendHash(){
+		$.get('/sendHash', {request :$('#transactionHash').val()}, function(data){ 
+			$('#resultHash').html(data.disssplay1);   // Coge los elementos con id = "resultcustom"
+			$('#resultHash2').html(data.disssplay2);   // Coge los elementos con id = "resultcustom"
+			$('#resultHash3').html(data.disssplay3);
+			$('#resultHash4').html(data.disssplay4);
+			$('#resultHash5').html(data.disssplay5);
+			$('#resultHash6').html(data.disssplay6);
+			$('#resultHash7').html(data.disssplay7);
+			$('#resultHash8').html(data.disssplay8);
+			$('#resultHash9').html(data.disssplay9);
+			$('#resultHash10').html(data.disssplay10);
+			$('#resultHash11').html(data.disssplay11);
+			$('#resultHash12').html(data.disssplay12);
+
+		// El primer valor con '' indica que seguimos en la misma página 
+		// $(selector).val() devuelve atributo value
+		// $(selector).val(value) establece el valor del atributo value
+	//		alert("Transaction hash sent");
+		});
+//			$('#resultcustom').html(data.disssplay);   // Coge los elementos con id = "resultcustom"
+//			$('#logevent').html(data.logevent); 
 	}
 
-	// Ejemplos:
+	function getBlock(){
+		$.get('/getBlock', {request :$('#blockId').val()}, function(data){ 
+			$('#blockData').html(data.blockData);   // Coge los elementos con id = "resultcustom"
+			$('#blockData2').html(data.blockData2);
+			$('#blockData3').html(data.blockData3);
+			$('#blockData4').html(data.blockData4);
+			$('#blockData5').html(data.blockData5);
+			$('#blockData6').html(data.blockData6);
+			$('#blockData7').html(data.blockData7);
+			$('#blockData8').html(data.blockData8);
+			$('#blockData9').html(data.blockData9);
+			$('#blockData10').html(data.blockData10);
+			$('#blockData11').html(data.blockData11);
+			$('#blockData12').html(data.blockData12);
+			$('#blockData13').html(data.blockData13);
+			$('#blockData14').html(data.blockData14);
+			$('#blockData15').html(data.blockData15);
+			$('#blockData16').html(data.blockData16);
+			$('#blockData17').html(data.blockData17);
+			$('#blockData18').html(data.blockData18);
+			$('#blockData19').html(data.blockData19);
 
-	// INSERT INTO video_games (ID, name, owner, console, price, players, comments) VALUES (51, 'New Super Mario Bros', 'John', 'Wii', 4, 1, 'Incredible!')
 
-	// SELECT name FROM video_games WHERE console = 'Nintendo 64'
+		//	alert("Transaction hash sent");
+		});
 
-	// SELECT nom FROM jeux_video WHERE prix >30
+	}
 
-	// UPDATE video_games SET owner='Kathy' WHERE ID=1
+	function visible(element){
+		 var elemento = document.getElementById(element);
+		 elemento.style.display = 'block';
+	} 
 
+	function invisible(element){
+		 var elemento = document.getElementById(element);
+		 elemento.style.display = 'none';
+	} 
+
+	function enviarBlockHash(){
+		miTabla = document.getElementById("table1");
+		mitbody = miTabla.getElementsByTagName("tbody")[0];
+		miFila = mitbody.getElementsByTagName("tr")[2];
+		miCelda = miFila.getElementsByTagName("td")[1];
+		miP = miCelda.getElementsByTagName("p")[0];
+		miDato = miP.firstChild.nodeValue;
+		document.getElementById("blockId").value = miDato;
+	} 
+
+		function enviarBlockHashFromBlock(){
+		miTabla = document.getElementById("table2");
+		mitbody = miTabla.getElementsByTagName("tbody")[0];
+		miFila = mitbody.getElementsByTagName("tr")[2];
+		miCelda = miFila.getElementsByTagName("td")[1];
+		miP = miCelda.getElementsByTagName("p")[0];
+		miDato = miP.firstChild.nodeValue;
+		document.getElementById("blockId").value = miDato;
+	} 
+
+	function enviarTransHash(){
+		miTabla = document.getElementById("table2");
+		mitbody = miTabla.getElementsByTagName("tbody")[0];
+		miFila = mitbody.getElementsByTagName("tr")[18];
+		miCelda = miFila.getElementsByTagName("td")[1];
+		miP = miCelda.getElementsByTagName("p")[0];
+		miDato = miP.firstChild.nodeValue;
+		document.getElementById("transactionHash").value = miDato;
+	} 
 </script>	
   
     <h1><%= title %></h1>	
@@ -70,7 +152,165 @@
 		               
         <h2> Get the result </h2>
 		<input type="button" value="Click for result!" onclick="getResult()">
-		<p id = "resultcustom"> Result </p></br>
+		<p id = "resultcustom"> Result </p></br></br></br>
+
+		<h2> transactionHash: </h2>
+		<input type="text" id = "transactionHash" size="70"></br>
+		<a href="javascript:visible('tabla1')" ><input type="button" value="Set your transaction hash" onclick="sendHash()"></a></br> 
+<!-- 	TransactionHash: <p id = "resultHash"> Result of the hash </p>
+		Nonce: <p id = "resultHash2"> Nonce </p>
+		BlockHash: <p id = "resultHash3"> Hash of the block </p></br> 
+		BlockNumber: <p id = "resultHash4"> Number of the block </p></br> 
+		TransactionIndex: <p id = "resultHash5"> Index of the transaction </p></br> 
+		from: <p id = "resultHash6">  </p></br> 
+		to: <p id = "resultHash7">  </p></br> 
+		Value: <p id = "resultHash8">  </p></br> 
+        Gas: <p id = "resultHash9">  </p></br> 
+        GasPrice: <p id = "resultHash10">  </p></br> 
+        Input: <p id = "resultHash11">  </p></br>  -->
+
+<div id="tabla1" style="display:none">
+	<input type="button" value="Cerrar transacción" onclick="javascript:invisible('tabla1')">
+	<table id="table1" class="table">
+	    <tr>
+	      <td>TransactionHash: </td>
+	      <td><p id = "resultHash"> Result of the hash </p></td>
+	    </tr>
+	    <tr>
+	      <td>Nonce</td>
+	      <td><p id = "resultHash2"> Nonce </p></td>
+	    </tr>
+	    <tr>
+	      <td>BlockHash</td>
+	      <td><a href="javascript:enviarBlockHash()"><p id = "resultHash3"> Hash of the block </p></a></td>
+	    </tr>
+	    <tr>
+	      <td>BlockNumber</td>
+	      <td><p id = "resultHash4"> Number of the block </p></td>
+	    </tr>
+	    <tr>
+	      <td>TransactionIndex</td>
+	      <td><p id = "resultHash5"> Index of the transaction </p></td>
+	    </tr>
+	    <tr>
+	      <td>from</td>
+	      <td><p id = "resultHash6"> From direction </p></td>
+	    </tr>
+	    <tr>
+	      <td>to</td>
+	      <td><p id = "resultHash7"> To direction </p></td>
+	    </tr>
+	    <tr>
+	      <td>Value</td>
+	      <td><p id = "resultHash8"> Value </p></td>
+	    </tr>
+	    <tr>
+	      <td>Gas</td>
+	      <td><p id = "resultHash9"> Gas </p></td>
+	    </tr>
+	    <tr>
+	      <td>Gas price</td>
+	      <td><p id = "resultHash10">  Gas price</p></td>
+	    </tr>
+	    <tr>
+	      <td>Input</td>
+	      <td><p id = "resultHash11"> Input </p></td>
+	    </tr>
+	   	<tr>
+	      <td>Inputdecod</td>
+	      <td><p id = "resultHash12"> Inputdecod </p></td>
+	    </tr>
+	</table>
+</div>
+
+
+		<h2> Block Info: </h2>
+		<input type="text" name ="blockid" id = "blockId" size="70"></br>
+		<a href="javascript:visible('tabla2')" ><input type="button" value="Set your block number or hash" onclick="getBlock()"></a></br>
+
+<div id="tabla2" style="display:none">
+	<input type="button" value="Cerrar bloque" onclick="javascript:invisible('tabla2')">
+	<table id="table2" class="table">
+	  <tbody>
+	    <tr>
+	      <td>Block number: </td>
+	      <td><p id = "blockData"> Block number </p></td>
+	    </tr>
+	    <tr>
+	      <td>Block hash</td>
+	      <td><p id = "blockData2"> Block hash </p></td>
+	    </tr>
+	    <tr>
+	      <td>Parent hash</td>
+	      <td><a href="javascript:enviarBlockHashFromBlock()"><p id = "blockData3"> Parent hash </p></a></td>
+	    </tr>
+	    <tr>
+	      <td>Mix hash</td>
+	      <td><p id = "blockData4"> Mix hash </p></td>
+	    </tr>
+	    <tr>
+	      <td>Nonce</td>
+	      <td><p id = "blockData5"> Nonce </p></td>
+	    </tr>
+	    <tr>
+	      <td>sha3Uncles</td>
+	      <td><p id = "blockData6"> sha3Uncles </p></td>
+	    </tr>
+	    <tr>
+	      <td>logsBloom</td>
+	      <td><p id = "blockData7"> Logs bloom </p></td>
+	    </tr>
+	    <tr>
+	      <td>transactionsRoot</td>
+	      <td><p id = "blockData8"> Transactions root </p></td>
+	    </tr>
+	    <tr>
+	      <td>stateRoot</td>
+	      <td><p id = "blockData9"> State root </p></td>
+	    </tr>
+	    <tr>
+	      <td>receiptsRoot</td>
+	      <td><p id = "blockData10">  Receipts root</p></td>
+	    </tr>
+	    <tr>
+	      <td>Miner</td>
+	      <td><p id = "blockData11"> Miner </p></td>
+	    </tr>
+	    <tr>
+	      <td>difficuly</td>
+	      <td><p id = "blockData12"> Difficulty </p></td>
+	    </tr>
+	    <tr>
+	      <td>Total difficulty</td>
+	      <td><p id = "blockData13"> Total difficulty </p></td>
+	    </tr>
+	    <tr>
+	      <td>Extra data</td>
+	      <td><p id = "blockData14"> Extra data </p></td>
+	    </tr>
+	    <tr>
+	      <td>Size</td>
+	      <td><p id = "blockData15"> Size </p></td>
+	    </tr>
+	    <tr>
+	      <td>gasLimit</td>
+	      <td><p id = "blockData16"> gasLimit </p></td>
+	    </tr>
+	    <tr>
+	      <td>gasUsed</td>
+	      <td><p id = "blockData17"> gasUsed </p></td>
+	    </tr>
+	    <tr>
+	      <td>timestamp</td>
+	      <td><p id = "blockData18"> timestamp </p></td>
+	    </tr>
+	    <tr>
+	      <td>Transactions</td>
+	      <td><a href="javascript:enviarTransHash()"><p id = "blockData19"> Transactions </p></a></td>
+	    </tr>
+	</table>
+</div>
+
 
         <input type="button" value="CLICK FOR NEW REQUEST!" onclick="window.location.reload()">
   </body>
